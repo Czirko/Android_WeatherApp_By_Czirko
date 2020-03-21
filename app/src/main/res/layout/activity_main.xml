@@ -7,24 +7,25 @@
     tools:context=".MainActivity">
 
     <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+        android:id="@+id/auto_complete_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="30dp"
-        android:id="@+id/auto_complete_edit_text"
         android:layout_margin="10dp"
         android:inputType="text"
         android:maxLines="1"
+        android:minHeight="30dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-    android:id="@+id/selected_item"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/auto_complete_edit_text"
-    android:layout_marginTop="50dp"
-    android:padding="20dp"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/auto_complete_edit_text"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMain"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="1dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/auto_complete_edit_text"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

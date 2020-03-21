@@ -2,6 +2,10 @@ package com.example.weatherappbyczirko;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,8 +20,11 @@ import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
 import com.example.weatherappbyczirko.adapters.CitySuggestAdapter;
+import com.example.weatherappbyczirko.adapters.MyHourlyRVAdapter;
 import com.example.weatherappbyczirko.api.AccuApi;
 import com.example.weatherappbyczirko.api.model.City;
+import com.example.weatherappbyczirko.api.model.Forecast12H;
+import com.example.weatherappbyczirko.api.viewModells.HourlyViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +42,11 @@ public class MainActivity extends AppCompatActivity {
     private static final String apiKey= "B3yHbxjfcICiwxmY9FptiBu9tH1K9rH0";
     private String acceptLanguage="hu";
 
+    private RecyclerView rvMain;
+    private MyHourlyRVAdapter hourlyAdapter;
+    private List<Forecast12H> hourlyDataList;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +55,12 @@ public class MainActivity extends AppCompatActivity {
 
         final AutoCompleteTextView autoCompleteTextView =
                 findViewById(R.id.auto_complete_edit_text);
-        final TextView selectedText = findViewById(R.id.selected_item);
+
+        rvMain = findViewById(R.id.rvMain);
+        rvMain.setLayoutManager(new LinearLayoutManager(this));
+
+        rvMain.setHasFixedSize(false);
+
 
         autoSuggestAdapter = new CitySuggestAdapter(this,
                 android.R.layout.simple_dropdown_item_1line);
@@ -52,7 +69,9 @@ public class MainActivity extends AppCompatActivity {
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedText.setText(autoSuggestAdapter.getItem(position).getLocalizedName());
+                City selectedCity=autoSuggestAdapter.getItem(position);
+                autoCompleteTextView.setText("");
+                getHourlyCall(selectedCity);
 
             }
         });
@@ -92,6 +111,45 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void getHourlyCall(City selectedCity) {
+        HourlyViewModel vm = ViewModelProviders.of(this).get(HourlyViewModel.class);
+        vm.getHorulyForecast(selectedCity.getKey(),apiKey).observe(this, new Observer<ArrayList<Forecast12H>>() {
+            @Override
+            public void onChanged(ArrayList<Forecast12H> forecast12HS) {
+                if(hourlyAdapter==null){
+                    hourlyAdapter= new MyHourlyRVAdapter(forecast12HS);
+                    rvMain.setAdapter(hourlyAdapter);
+                }else{
+                    hourlyAdapter.setDatas(forecast12HS);
+                    hourlyAdapter.notifyDataSetChanged();
+                }
+
+            }
+        });
+    }
+
+    /*private List<Forecast12H> getHourlyDatas(String cityKey) {
+        Log.d("hourlyTest", "hourlyCallFun");
+
+        Call<ArrayList<Forecast12H>>hourlyCall=AccuApi.getInstance().hourly().call12hourly(cityKey,apiKey,"hu",false,true);
+        hourlyCall.enqueue(new Callback<ArrayList<Forecast12H>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Forecast12H>> call, Response<ArrayList<Forecast12H>> response) {
+                hourlyDataList= response.body();
+                Log.d("hourlyTest", "OK "+hourlyDataList.size());
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Forecast12H>> call, Throwable t) {
+                Log.d("hourlyTest", "FALSE "+ t.toString());
+
+            }
+        });
+
+        return hourlyDataList;
+
+    }*/
+
     private void makeAutoTextApi(String txt) {
         Call<ArrayList<City>> autoCity = AccuApi.getInstance().location().autoCompleteCity(apiKey,txt,acceptLanguage);
         autoCity.enqueue(new Callback<ArrayList<City>>() {
@@ -108,20 +166,5 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("testTag", "auto food complete error: " + t.toString());
             }
         });
-        /*autoCity.enqueue(new Callback<JSONArray>() {
-            @Override
-            public void onResponse(Call<JSONArray> call, Response<JSONArray> response) {
-                JSONArray c = response.body();
-                Log.d("testTag" , c.toString());
-            }
-
-            @Override
-            public void onFailure(Call<JSONArray> call, Throwable t) {
-                Log.d("testTag", "auto food complete error: " + t.toString());
-
-            }
-        });
-*/
-        //java.lang.IllegalStateException: Expected BEGIN_OBJECT but was BEGIN_ARRAY at line 1 column 2 path $
-    }
+        }
 }

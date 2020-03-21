@@ -1,6 +1,5 @@
 package com.example.weatherappbyczirko.api;
 
-import com.example.weatherappbyczirko.api.apiInterfaces.ForecastsInterface;
 import com.example.weatherappbyczirko.api.apiInterfaces.LocationInterface;
 import com.google.gson.GsonBuilder;
 
@@ -8,8 +7,9 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class AccuApi {
-    public static final String API_URL="http://dataservice.accuweather.com";
+public class OpenApi {
+
+   /* public static final String API_URL="http://dataservice.accuweather.com";
     private static AccuApi mIstance;
     private Retrofit retrofit;
     private OkHttpClient okHttpClient;
@@ -33,9 +33,5 @@ public class AccuApi {
 
     public LocationInterface location(){
         return retrofit.create(LocationInterface.class);
-    }
-    public ForecastsInterface hourly(){
-        return retrofit.create(ForecastsInterface.class);
-    }
-
+    }*/
 }
