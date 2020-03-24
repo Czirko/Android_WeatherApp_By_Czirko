@@ -17,13 +17,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
-import android.widget.TextView;
 
 import com.example.weatherappbyczirko.adapters.CitySuggestAdapter;
 import com.example.weatherappbyczirko.adapters.MyHourlyRVAdapter;
 import com.example.weatherappbyczirko.api.AccuApi;
-import com.example.weatherappbyczirko.api.model.City;
-import com.example.weatherappbyczirko.api.model.Forecast12H;
+import com.example.weatherappbyczirko.api.model.fiveDayForecastModels.FiveDayForcastRoot;
+import com.example.weatherappbyczirko.api.model.locationModels.City;
+import com.example.weatherappbyczirko.api.model.currentModels.CurrentDatas;
+import com.example.weatherappbyczirko.api.model.houdlyModels.Forecast12H;
+import com.example.weatherappbyczirko.api.viewModells.CurrentViewModell;
+import com.example.weatherappbyczirko.api.viewModells.FiveDayForcastViewModel;
 import com.example.weatherappbyczirko.api.viewModells.HourlyViewModel;
 
 import java.util.ArrayList;
@@ -53,11 +56,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         final AutoCompleteTextView autoCompleteTextView =
                 findViewById(R.id.auto_complete_edit_text);
 
         rvMain = findViewById(R.id.rvMain);
-        rvMain.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager horiLayManager= new LinearLayoutManager(
+                this,
+                LinearLayoutManager.HORIZONTAL,
+                false
+        );
+        rvMain.setLayoutManager(horiLayManager);
 
         rvMain.setHasFixedSize(false);
 
@@ -72,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
                 City selectedCity=autoSuggestAdapter.getItem(position);
                 autoCompleteTextView.setText("");
                 getHourlyCall(selectedCity);
+                testCurrent(selectedCity);
+                testFiveDay(selectedCity);
 
             }
         });
@@ -111,6 +123,29 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void testFiveDay(City selectedCity) {
+        FiveDayForcastViewModel fvm=ViewModelProviders.of(this).get(FiveDayForcastViewModel.class);
+        fvm.getFiveDayForecast(selectedCity.getKey(),apiKey).observe(this, new Observer<FiveDayForcastRoot>() {
+            @Override
+            public void onChanged(FiveDayForcastRoot fiveDayForcastRoot) {
+                Log.d("currentTest","fiveday: "+fiveDayForcastRoot.getDailyForecasts().size()+"");
+
+
+            }
+        });
+    }
+
+    private void testCurrent(City selectedCity) {
+        CurrentViewModell cvm= ViewModelProviders.of(this).get(CurrentViewModell.class);
+        cvm.getCurrentForecast(selectedCity.getKey(),apiKey).observe(this, new Observer<ArrayList<CurrentDatas>>() {
+            @Override
+            public void onChanged(ArrayList<CurrentDatas> currentDatas) {
+                Log.d("currentTest",currentDatas.size()+"");
+
+            }
+        });
+    }
+
     private void getHourlyCall(City selectedCity) {
         HourlyViewModel vm = ViewModelProviders.of(this).get(HourlyViewModel.class);
         vm.getHorulyForecast(selectedCity.getKey(),apiKey).observe(this, new Observer<ArrayList<Forecast12H>>() {
@@ -128,27 +163,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /*private List<Forecast12H> getHourlyDatas(String cityKey) {
-        Log.d("hourlyTest", "hourlyCallFun");
 
-        Call<ArrayList<Forecast12H>>hourlyCall=AccuApi.getInstance().hourly().call12hourly(cityKey,apiKey,"hu",false,true);
-        hourlyCall.enqueue(new Callback<ArrayList<Forecast12H>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Forecast12H>> call, Response<ArrayList<Forecast12H>> response) {
-                hourlyDataList= response.body();
-                Log.d("hourlyTest", "OK "+hourlyDataList.size());
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<Forecast12H>> call, Throwable t) {
-                Log.d("hourlyTest", "FALSE "+ t.toString());
-
-            }
-        });
-
-        return hourlyDataList;
-
-    }*/
 
     private void makeAutoTextApi(String txt) {
         Call<ArrayList<City>> autoCity = AccuApi.getInstance().location().autoCompleteCity(apiKey,txt,acceptLanguage);

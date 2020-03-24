@@ -1,4 +1,4 @@
-package com.example.weatherappbyczirko.api.model;
+package com.example.weatherappbyczirko.api.model.houdlyModels;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -25,7 +25,7 @@ public class Forecast12H {
     private Boolean isDaylight;
     @SerializedName("Temperature")
     @Expose
-    private Temperature temperature;
+    private HourlyTemperature hourlyTemperature;
     @SerializedName("PrecipitationProbability")
     @Expose
     private Integer precipitationProbability;
@@ -90,12 +90,12 @@ public class Forecast12H {
         this.isDaylight = isDaylight;
     }
 
-    public Temperature getTemperature() {
-        return temperature;
+    public HourlyTemperature getHourlyTemperature() {
+        return hourlyTemperature;
     }
 
-    public void setTemperature(Temperature temperature) {
-        this.temperature = temperature;
+    public void setHourlyTemperature(HourlyTemperature hourlyTemperature) {
+        this.hourlyTemperature = hourlyTemperature;
     }
 
     public Integer getPrecipitationProbability() {

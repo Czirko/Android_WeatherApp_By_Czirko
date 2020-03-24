@@ -1,4 +1,4 @@
-package com.example.weatherappbyczirko.api.model;
+package com.example.weatherappbyczirko.api.model.locationModels;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

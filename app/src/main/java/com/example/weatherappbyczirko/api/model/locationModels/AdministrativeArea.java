@@ -1,10 +1,9 @@
-package com.example.weatherappbyczirko.api.model;
+package com.example.weatherappbyczirko.api.model.locationModels;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Country {
-
+public class AdministrativeArea {
     @SerializedName("ID")
     @Expose
     private String iD;
@@ -27,4 +26,6 @@ public class Country {
     public void setLocalizedName(String localizedName) {
         this.localizedName = localizedName;
     }
+
 }
+

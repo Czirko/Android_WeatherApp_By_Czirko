@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.weatherappbyczirko.api.AccuApi;
-import com.example.weatherappbyczirko.api.model.Forecast12H;
+import com.example.weatherappbyczirko.api.model.houdlyModels.Forecast12H;
 
 import java.util.ArrayList;
 
@@ -27,7 +27,7 @@ public class HourlyViewModel extends ViewModel {
 
     private void loadDatas(String cityKey, String apiKey) {
 
-        Call<ArrayList<Forecast12H>> hourlyCall= AccuApi.getInstance().hourly().call12hourly(cityKey,apiKey,"hu",false,true);
+        Call<ArrayList<Forecast12H>> hourlyCall= AccuApi.getInstance().forecast().call12hourly(cityKey,apiKey,"hu",false,true);
         hourlyCall.enqueue(new Callback<ArrayList<Forecast12H>>() {
             @Override
             public void onResponse(Call<ArrayList<Forecast12H>> call, Response<ArrayList<Forecast12H>> response) {

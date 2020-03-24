@@ -8,7 +8,7 @@ import android.widget.Filterable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.weatherappbyczirko.api.model.City;
+import com.example.weatherappbyczirko.api.model.locationModels.City;
 
 import java.util.ArrayList;
 import java.util.List;

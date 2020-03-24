@@ -1,9 +1,9 @@
-package com.example.weatherappbyczirko.api.model;
+package com.example.weatherappbyczirko.api.model.currentModels;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Temperature {
+public class CurrentTempType {
 
     @SerializedName("Value")
     @Expose
@@ -39,12 +39,4 @@ public class Temperature {
         this.unitType = unitType;
     }
 
-    @Override
-    public String toString() {
-        return "Temperature{" +
-                "value=" + value +
-                ", unit='" + unit + '\'' +
-                ", unitType=" + unitType +
-                '}';
-    }
 }

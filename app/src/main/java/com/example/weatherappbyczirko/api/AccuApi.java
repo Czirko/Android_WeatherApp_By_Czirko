@@ -34,7 +34,7 @@ public class AccuApi {
     public LocationInterface location(){
         return retrofit.create(LocationInterface.class);
     }
-    public ForecastsInterface hourly(){
+    public ForecastsInterface forecast(){
         return retrofit.create(ForecastsInterface.class);
     }
 

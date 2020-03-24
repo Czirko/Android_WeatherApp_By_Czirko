@@ -1,6 +1,6 @@
 package com.example.weatherappbyczirko.api.apiInterfaces;
 
-import com.example.weatherappbyczirko.api.model.City;
+import com.example.weatherappbyczirko.api.model.locationModels.City;
 
 import java.util.ArrayList;
 
