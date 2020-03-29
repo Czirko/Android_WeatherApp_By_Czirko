@@ -6,26 +6,45 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <include
+        android:id="@+id/currentContainer"
+        layout="@layout/current_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        />
+
+
     <androidx.appcompat.widget.AppCompatAutoCompleteTextView
         android:id="@+id/auto_complete_edit_text"
-        android:layout_width="match_parent"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:inputType="text"
         android:maxLines="1"
         android:minHeight="30dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/currentContainer" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvMain"
+        android:id="@+id/rvHourly"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
         android:layout_marginTop="1dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/auto_complete_edit_text"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/auto_complete_edit_text" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvDaily"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="1dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rvHourly" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

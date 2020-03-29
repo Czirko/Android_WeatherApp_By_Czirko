@@ -3,7 +3,7 @@ package com.example.weatherappbyczirko.api.model.fiveDayForecastModels;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-class Day {
+public class Day {
 
     @SerializedName("Icon")
     @Expose
